@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgb(201, 93, 240), rgb(187, 222, 232));
+        }
+
+        .dashboard-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            color: #4b0082;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #9370db;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #836fff;
+        }
+
+        .dashboard-btn {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        /* Table for user management */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td button {
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #ff6666;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        td button:hover {
+            background-color: #ff4d4d;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #4b0082;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Admin Dashboard -->
+    <div class="dashboard-container">
+        <h1>Welcome, Admin</h1>
+
+        <!-- Display total number of users -->
+        <p class="summary">Number of users: <span id="user-count">{{ total_users }}</span></p>
+
+        <!-- Table to display users -->
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            <tbody id="user-table">
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td> <!-- User ID -->
+                    <td>{{ user.name }}</td> <!-- Changed from user.username to user.name -->
+                    <td>{{ user.email }}</td> <!-- Email -->
+                    <td>
+                        <form action="{{ url_for('delete_user', id=user.id) }}" method="POST" onsubmit="return confirmDelete();"> <!-- Added onsubmit event to call JavaScript -->
+                            <button type="submit">Delete</button> <!-- Delete button triggers confirmation -->
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <button class="dashboard-btn" onclick="adminLogout()">Logout</button>
+    </div>
+
+    <script>
+        // Function to show confirmation dialog before deleting a user
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this user?"); // Show confirmation popup
+        }
+
+        // Admin logout (simple redirect for now)
+        function adminLogout() {
+            window.location.href = '{{ url_for('admin_login') }}'; // Redirect to login page
+        }
+    </script>
+
+</body>
+</html>

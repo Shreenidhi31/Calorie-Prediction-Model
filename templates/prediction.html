@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Page</title>
+    <style id="theme-style">
+        /* Light Theme Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f78fb3, #9b59b6, #52ace9);
+            color: #fff;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+        main {
+            padding: 40px;
+            text-align: center;
+        }
+
+        form {
+            background:linear-gradient(130deg, #870958,#000000);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            display: inline-block;
+            max-width: 600px;
+            width: 100%;
+            text-align: left;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        form select,
+        form input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        form button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #ff5e62;
+        }
+
+        .result {
+            background:linear-gradient(130deg, #870958,#341669,#000000);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #fff;
+            margin-bottom: 20px;
+            display: inline-block;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #chart-container {
+            margin: 20px auto;
+            max-width: 600px;
+            color: #000000;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        /* Dark Theme Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2e2e2e, #4e4e4e);
+            color: #ddd;
+        }
+
+        body.dark-mode header {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        body.dark-mode form {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        body.dark-mode .result {
+            background: rgba(0, 0, 0, 0.7);
+        }
+    </style>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Prediction Page</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <!-- Theme switcher button -->
+            <button id="theme-switcher">Switch Theme</button>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Enter Your Details</h2>
+            <form action="/prediction" method="post">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" name="height" required>
+
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+
+                <label for="duration">Duration (minutes):</label>
+                <input type="number" id="duration" name="duration" required>
+
+                <label for="heart_rate">Heart Rate (bpm):</label>
+                <input type="number" id="heart_rate" name="heart_rate" required>
+
+                <label for="body_temp">Body Temperature (°C):</label>
+                <input type="number" id="body_temp" name="body_temp" step="0.1" required>
+
+                <button type="submit">Submit</button>
+            </form>
+
+            {% if prediction is not none %}
+                <div class="result">
+                    <h2>Prediction Result</h2>
+                    <p>Total calories burned during this session is <strong>{{ prediction }} calories</strong>.</p>
+                </div>
+
+                <!-- Chart.js container -->
+                <div id="chart-container">
+                    <canvas id="predictionChart"></canvas>
+                </div>
+
+                <script>
+                    const prediction = {{ prediction }};
+                    const ctx = document.getElementById('predictionChart').getContext('2d');
+                    const chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Prediction'],
+                            datasets: [{
+                                label: 'Calories',
+                                data: [prediction],
+                                borderColor: '#fff',
+                                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Session',
+                                        color: 'white'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Calories',
+                                        color: 'white'
+                                    }
+                                }
+                            },
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                </script>
+            {% endif %}
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+
+            // Load the previously selected theme from local storage
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            // Function to switch themes
+            const switchTheme = () => {
+                if (document.body.classList.contains('dark-mode')) {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                }
+            };
+
+            // Add event listener to the button
+            themeSwitcher.addEventListener('click', switchTheme);
+        });
+    </script>
+</body>
+</html>

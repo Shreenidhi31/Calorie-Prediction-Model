@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page</title>
+    <style id="theme-style">
+        /* Default Light Theme Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+           background: linear-gradient(135deg, #f78fb3, #9b59b6, #52ace9);
+            color: #fff;
+            min-height: 100vh;
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        nav a:hover {
+            background-color: #fff;
+            color: #333;
+        }
+        main {
+            padding: 40px;
+            text-align: center;
+        }
+        section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        section h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        p, ul, li {
+            color: #f1f1f1;
+            font-size: 1rem;
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 5px 0;
+            padding: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        .content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Dark Theme Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2e2e2e, #4e4e4e);
+            color: #ddd;
+        }
+        body.dark-mode header {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        body.dark-mode section {
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeSwitcher = document.getElementById('theme-switcher');
+
+        // Load the previously selected theme from local storage
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Function to switch themes
+        const switchTheme = () => {
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        };
+
+        // Add event listener to the button
+        themeSwitcher.addEventListener('click', switchTheme);
+    });
+</script>
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+
+            <!-- Theme switcher button -->
+            <button id="theme-switcher">Switch Theme</button>
+        </nav>
+    </header>
+   <main>
+       <section>
+            <h2>About Our Website</h2>
+            <p>Welcome to the Calorie Prediction Website, your go-to tool for managing and understanding your caloric intake and expenditure...</p>
+        </section>
+
+        <section>
+            <h2>For Lower Weight</h2>
+            <p>If you are aiming to gain weight or build muscle, consider incorporating these foods into your diet:</p>
+            <ul>
+                <li>Avocados</li>
+                <li>Whole grains (e.g., brown rice, quinoa)</li>
+                <li>Nuts and seeds</li>
+                <li>Lean meats (e.g., chicken, turkey)</li>
+                <li>Legumes (e.g., lentils, chickpeas)</li>
+                <li>Healthy oils (e.g., olive oil, coconut oil)</li>
+                <li>Full-fat dairy products (if not lactose intolerant)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>For High Weight</h2>
+            <p>If you are looking to manage or reduce weight, these foods can help support your goals:</p>
+            <ul>
+                <li>Leafy greens (e.g., spinach, kale)</li>
+                <li>Lean proteins (e.g., fish, tofu)</li>
+                <li>Vegetables (e.g., broccoli, bell peppers)</li>
+                <li>Fruits (e.g., berries, apples)</li>
+                <li>Whole grains (e.g., oats, barley)</li>
+                <li>Legumes (e.g., beans, lentils)</li>
+                <li>Low-fat dairy or dairy alternatives</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>For Normal Weight</h2>
+            <p>To maintain a balanced diet and overall health, consider these food options:</p>
+            <ul>
+                <li>Fruits (e.g., oranges, bananas)</li>
+                <li>Vegetables (e.g., carrots, spinach)</li>
+                <li>Whole grains (e.g., whole wheat bread, brown rice)</li>
+                <li>Lean proteins (e.g., fish, chicken)</li>
+                <li>Nuts and seeds</li>
+                <li>Low-fat dairy products</li>
+                <li>Healthy fats (e.g., avocados, olive oil)</li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

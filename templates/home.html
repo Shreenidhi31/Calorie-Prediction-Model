@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f78fb3, #9b59b6, #60b3eb);
+            color: #fff;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #333, #444);
+            color: #ccc;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .theme-toggle, .role-toggle {
+            position: absolute;
+            top: 20px;
+            background: #fff;
+            color: hsl(275, 83%, 49%);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .theme-toggle {
+            right: 120px;
+        }
+        .role-toggle {
+            right: 20px;
+        }
+        .role-dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            z-index: 1;
+        }
+        .role-dropdown a {
+            display: block;
+            padding: 10px 20px;
+            color: hsl(275, 83%, 49%);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .role-dropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .title {
+            font-size: 55px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 7px 2px 4px #000102;
+            margin: 20px 0;
+            animation: slide 14s ease-in-out infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        main {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-form, .register-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #871d57, #4c1a5f);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 10px 10px 20px #b5c4e1;
+        }
+
+        .login-form input, .register-form input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .login-form button, .register-form button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background: #2575fc;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .login-form button:hover, .register-form button:hover {
+            background: #1a4b9a;
+        }
+
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .flashes li {
+            margin: 5px 0;
+        }
+
+        .bmi-button {
+            margin-top: 20px;
+        }
+
+        .bmi-button button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #6a11cb;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .bmi-button button:hover {
+            background-color: #532ea1;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <button id="theme-switcher" class="theme-toggle">Dark/Light Theme</button>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </nav>
+        <button id="role-toggle" class="role-toggle">Select Role</button>
+        <div id="role-dropdown" class="role-dropdown">
+            <a href="#" id="user-option">User</a>
+            <a href="{{ url_for('admin_login') }}" id="admin-option">Admin</a>
+        </div>
+    </header>
+
+    <div class="title-animation title">Calorie Tracker</div>
+
+    <main>
+        <h2>Track your daily calories with ease</h2>
+        <p>Use our easy-to-use tool to manage your calorie intake and achieve your health goals.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div>
+      {% for category, message in messages %}
+        <div class="flash-message {{ category }}">
+            {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+        <form class="login-form" method="POST" action="{{ url_for('login') }}">
+            <input type="text" name="email" placeholder="email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+
+        <div class="bmi-button">
+            <a href="/calculator">
+                <button type="button">Go to BMI Calculator</button>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+
+            const switchTheme = () => {
+                if (document.body.classList.contains('dark-mode')) {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('theme', 'dark');
+                }
+            };
+
+            themeSwitcher.addEventListener('click', switchTheme);
+
+            // Role Dropdown Logic
+            const roleToggle = document.getElementById('role-toggle');
+            const roleDropdown = document.getElementById('role-dropdown');
+
+            roleToggle.addEventListener('click', () => {
+                roleDropdown.style.display = roleDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!roleToggle.contains(event.target) && !roleDropdown.contains(event.target)) {
+                    roleDropdown.style.display = 'none';
+                }
+            });
+
+            // User option click (no navigation)
+            const userOption = document.getElementById('user-option');
+            userOption.addEventListener('click', (event) => {
+                event.preventDefault(); // Stay on the same page for 'User' option
+                roleDropdown.style.display = 'none';
+            });
+
+            // Admin option click (navigates to admin login)
+            const adminOption = document.getElementById('admin-option');
+            adminOption.addEventListener('click', () => {
+                roleDropdown.style.display = 'none';
+        });
+    });
+    </script>
+</body>
+
+</html>
