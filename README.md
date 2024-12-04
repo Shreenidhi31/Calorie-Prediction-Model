@@ -32,36 +32,43 @@ IDE: PyCharm
 <h3>Clone the Repository</h3>
 
 bash
+<br>
 Copy code
+<br>
 git clone https://github.com/yourusername/calorie-burn-prediction.git  
 cd calorie-burn-prediction  
+<br>
 Install Dependencies
 Ensure you have Python 3.x installed. Then run:
-
+<br>
 bash
+<br>
 Copy code
-pip install -r requirements.txt  
-Set Up the Database
-
+<br>
+pip install -r requirements.txt 
+<br>
+<h2>Set Up the Database</h2>
 Create a MySQL database and table for user authentication.
 Update the database credentials in app.py.
-Run the Application
+
+<h2>Run the Application</h2>
 Open PyCharm and run the app.py file. The application will be available at:
 
 arduino
 Copy code
 http://127.0.0.1:5000  
-Test the Application
 
+<h2>Test the Application</h2>
 Log in using the credentials stored in the database.
 Enter the required inputs to get calorie burn predictions.
-Dataset
+<br>
+<h2>Dataset</h2>
 The dataset used for training the model includes user attributes such as age, weight, height, activity duration, and calories burned.
 
-Model
+<h2>Model</h2>
 The predictive model is built using a Random Forest Regressor, achieving an accuracy of 85% during testing.
 
-Future Enhancements
+<h2>Future Enhancements</h2>
 Add more user-friendly features to the interface.
 Improve model accuracy with additional features and fine-tuning.
 Deploy the application on a cloud platform for wider access.
